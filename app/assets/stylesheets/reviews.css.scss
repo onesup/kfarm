@@ -1,0 +1,317 @@
+// Place all the styles related to the reviews controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+div.clear {
+  clear: both;
+}
+
+div.blank {
+  width: 827px;
+  height: 66px;
+}
+div.blank img {
+  margin-top: 22px;
+  margin-left: 18px;
+}
+div.wrapper {
+  width: 827px;
+  background-color: #fff;
+}
+div.write {
+  width: 100%;
+  height: 66px;
+  text-align: right;
+  line-height: 66px;
+}
+div.bigReview {
+  width: 410px;
+  height: 268px;
+  float: left;
+  margin-bottom: 33px;
+}
+div.last {
+  float:right;
+}
+div.bigReview div.image {
+  width: 410px;
+  height: 203px;
+  overflow: hidden;
+}
+div.bigReview div.title {
+  width: 100%;
+  height: 65px;
+  background-color: #f2f2f2;
+}
+div.bigReview div.title > img {
+  margin-left: -2px;
+  margin-top: 8px;
+  float: left;
+}
+div.bigReview div.title span.title {
+  color: #5c5146;
+  font-family: NanumGothic, "나눔고딕", NanumGothicWeb;
+  font-size: 18pt;
+  font-weight: bold;
+  width: 295px;
+  height: 26px;
+  margin-top: 10px;
+  margin-left: 4px;
+  line-height: 26px;
+  display: block;
+  float: left;
+  overflow: hidden;
+  a{
+    color: #5c5146;
+    text-decoration: none;
+  }
+}
+div.bigReview div.title span.like {
+  display: block;
+  float: right;
+  width: 55px;
+  overflow: hidden;
+}
+div.bigReview div.title span.desc {
+  display: block;
+  float: left;
+  width: 280px;
+  height: 20px;
+  line-height: 20px;
+  color: #8e8071;
+  font-family: NanumGothic, "나눔고딕", NanumGothicWeb;
+  font-size: 11pt;
+  margin-left: 4px;
+  margin-top: 2px;  
+  overflow: hidden;
+}
+
+div.smallReview {
+  width: 270px;
+  height: 130px;
+  margin-right: 2px;
+  margin-left: 3px;
+  margin-bottom: 28px;
+  float: left;
+}
+div.smallReview div.image {
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+}
+div.smallReview div.image > img {
+  width: 270px;
+  height: 100px;
+}
+div.smallReview div.title {
+  width: 100%;
+  height: 30px;
+}
+
+div.smallReview div.title span.title a{
+	color:#5c5146;
+	text-decoration:none;
+}
+div.smallReview div.title span.title a:hover{
+	color:#5c5146;
+	text-decoration:none;
+};
+
+div.smallReview div.title span.title {
+  color: #5c5146;
+  font-family: NanumGothic, "나눔고딕", NanumGothicWeb;
+  font-size: 11pt;
+  font-weight: bold;
+  width: 200px;
+  height: 30px;
+  margin-left: 2px;
+  line-height: 30px;
+  display: block;
+  float: left;
+  overflow: hidden;
+}
+div.smallReview div.title span.like {
+  display: block;
+  float: right;
+  width: 50px;
+  margin-top: 5px;
+  overflow: hidden;
+}
+
+
+/* 후기 보기 */
+div.reviewsHeader {
+  width: 790px;
+  height: 65px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #746f6a; 
+}
+div.reviewsHeader div.title {
+  width: 415px;
+  height: 22px;
+  color: #746f6a;
+  font-size: 14pt;
+  font-family: NanumGothic, "나눔고딕", NanumGothicWeb;
+  line-height: 22px;
+  vertical-align: bottom;
+  float: left;
+  padding-top: 43px;
+  padding-left: 5px;
+}
+div.reviewsHeader div.regDate {
+  width: 100px;
+  height: 14px;
+  color: #746f6a;
+  font-size: 11pt;
+  font-family: NanumGothic, "나눔고딕", NanumGothicWeb;
+  line-height: 14px;
+  vertical-align: bottom;
+  float: left;
+  padding-top: 50px;
+}
+div.reviewsHeader div.like {
+  float: right;
+  width: 100px;
+  height: 20px;
+  padding-top: 50px;
+}
+
+div.desc {
+  width: 500px;
+  border-right: 1px solid #746f6a;
+  padding-top: 15px;
+  padding-left: 25px;
+  float: left;
+  
+  color: #746f6a;
+  font-size: 10pt;
+  font-family: NanumGothic, "나눔고딕", NanumGothicWeb;
+  line-height: 20px;
+}
+
+div.info {
+  width: 260px;
+  border-left: 1px solid #746f6a;
+  margin-left: -1px;
+  padding-top: 15px;
+  padding-left: 20px;
+  float: left;
+}
+
+div.info div.mentor {
+  width: 261px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #746f6a;
+  float: right;
+}
+div.info div.mentor span.name {
+  color: #746f6a;
+  font-size: 10pt;
+  font-family: NanumGothic, "나눔고딕", NanumGothicWeb;
+  font-weight: bold;
+  line-height: 20px;
+  width: 100%;
+  display: block;
+  margin-bottom: 10px;
+}
+div.info div.mentor span.image {
+  float: left;
+}
+div.info div.mentor span.image img {
+  width: 76px;
+  height: 66px;
+  overflow: hidden;
+}
+div.info div.mentor span.intro { 
+  display: block;
+  float: left;
+  width: 175px;
+  margin-left: 9px;
+  color: #746f6a;
+  font-size: 10pt;
+  font-family: NanumGothic, "나눔고딕", NanumGothicWeb;
+  line-height: 20px;
+}
+div.info div.details {
+  float: left;
+  width: 260px;
+  margin-top: 10px;
+}
+div.info div.details ul {
+  
+}
+div.info div.details ul li {
+  border-bottom: 1px solid #f2f2f2;
+  width: 100%;
+}
+div.info div.details ul li span {
+  display: block;
+  float: left;
+}
+div.info div.details ul li span.bullet {
+  color: #00a259;
+  font-size: 6pt;
+  width: 15px;
+  line-height: 33px;
+}
+div.info div.details ul li span.subject {
+  color: #00a259;
+  font-size: 10pt;
+  font-weight: bold;
+  line-height: 33px;
+  width: 70px;
+}
+div.info div.details ul li span.data {
+  color: #746f6a;
+  font-size: 10pt;
+  line-height: 33px;
+  width: 165px;
+}
+
+div.button {
+  width: 100%;
+  border-top: 1px solid #d6d6d6;
+  padding-top: 18px;
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+
+/* 글 작성 */
+
+div.reviewsWrite {
+  width: 790px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+div.reviewsWrite table {
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+div.reviewsWrite table td {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  color: #746f6a;
+  font-size: 12pt;
+  font-weight: bold;
+  font-family: NanumGothic, "나눔고딕", NanumGothicWeb;
+}
+div.reviewWrite table tr td.textarea {
+  textarea#reviews_contents{
+    width:750px;
+  }
+}
+div.reviewWrite table tr td.submit {
+  text-align: right;
+  padding-right: 10px;
+}
+
+#review_title{
+	width:65%;
+}
+
+

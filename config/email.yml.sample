@@ -1,0 +1,11 @@
+development:
+  :user_name: "onesup.lee@gmail.com"
+  :password: "mega0411"
+
+test:
+  :user_name: "onesup.lee@gmail.com"
+  :password: "mega0411"
+
+production:
+  :user_name: "onesup.lee@gmail.com"
+  :password: "mega0411"

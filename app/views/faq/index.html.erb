@@ -1,0 +1,84 @@
+<div class="page-title">
+  <div class="page-icon">
+    <%= image_tag("qna_icon.png")%>
+  </div>
+  <div class="title-name">
+    <%= image_tag("qna_title.png")%>
+  </div>
+</div>
+<div class="page-tabbar">
+	<div class="faq-subtitle">
+		<%= image_tag("faq_subtitle.png") %>
+	</div>
+</div>
+<div class="faq_wrapper">
+  <ul class="list">
+	  <% answer_cnt = 1 %>
+    <% unless @answers.nil? %>
+      <% @answers.each do |answer| %>
+      <li class="">
+        <span class="label">
+			<%= answer_cnt %>
+			<% answer_cnt = answer_cnt + 1 %>
+		</span>
+        <span class="title"><%= answer.title %></span>
+        <span class="pointer"></span>
+        <span class="detail"><%= answer.contents %></span>
+      </li>
+      <% end %>
+    <% else %>
+      <li class="odd">
+        <span class="label">12</span>
+        <span class="title">팜팜멘토링 신청하려면 어떻게 해야 하나요??</span>
+        <span class="pointer"></span>
+        <span class="detail">안녕하세요, 순창에서 벼농사만 30년동안 지은 벼농사의 달인 김순창입니다.</span>
+      </li>
+      <li class="">
+        <span class="label">12</span>
+        <span class="title">팜팜멘토링 신청하려면 어떻게 해야 하나요??</span>
+        <span class="pointer"></span>
+        <span class="detail">안녕하세요, 순창에서 벼농사만 30년동안 지은 벼농사의 달인 김순창입니다.</span>
+      </li>
+    <% end %>
+  </ul>
+<!-- TODO: 초기에 많이 등록되지 않으므로 우선 제외. 
+  <div class="more"><%= image_tag("button_more.png")%></div>
+-->
+</div>
+
+<div class="page-tabbar">
+		<div class="qna-subtitle">
+			<%= image_tag("qna_subtitle.png")%>
+		</div>
+</div>
+<div id="no-faq">
+  <%= image_tag("email_send_string.png")%>
+</div>
+<div class="form-wrapper">
+  <form action="#" method="post" id="email-send">
+    <div class="form-row">
+      <div class="form-label">
+        <%= image_tag("label_email.png")%>
+      </div>
+      <div class="form-input">
+        <input placeholder="본인의 이메일을 입력해주세요. 입력한 주소로 답변을 보내드립니다." id="email-form-email" name="email-form-email" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-label">
+        <%= image_tag("label_content.png")%>
+      </div>
+      <div class="form-input">
+        <textarea style="resize: none;" placeholder="내용을 입력하세요." id="email-form-content" name="email-form-content"></textarea>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-submit">
+        <%= image_tag("button_send.png", id:"btn-send") %>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<%= javascript_include_tag "faq" %>

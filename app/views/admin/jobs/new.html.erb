@@ -1,0 +1,44 @@
+<%= render 'form' %>
+
+<script type="text/javascript">
+	var map;
+	function init() {
+    // 지도 출력
+		map = new daum.maps.Map(document.getElementById('map'), {
+			center: new daum.maps.LatLng(37.537123, 127.005523),
+			level: 3
+		});
+    
+    // 마커 출력
+		var marker = new daum.maps.Marker({
+			position: new daum.maps.LatLng(37.537123, 127.005523)
+		});
+		marker.setMap(map);
+    
+    daum.maps.event.addListener(map,"dragend",function(){
+      // 좌표값 반환
+			var center = map.getCenter();
+			document.getElementById("mapLat").value = center.getLat();
+      document.getElementById("mapLng").value = center.getLng();
+      // 마커 이동
+      var position = new daum.maps.LatLng(center.getLat(), center.getLng());
+      marker.setPosition(position);
+      marker.setMap(map);
+    });
+    
+    daum.maps.event.addListener(map,"click",function(e) {
+      // 마커 이동
+      marker.setPosition(e.latLng);
+      marker.setMap(map);
+      // 좌표값 반환
+			document.getElementById("mapLat").value = e.latLng.getLat();
+      document.getElementById("mapLng").value = e.latLng.getLng();
+    });
+	}
+
+  $(function() {
+    init();
+    //$(".datepicker").datepicker();
+    //$(".chzn-select").chosen();
+  });
+</script>

@@ -1,0 +1,2 @@
+module Mentor::JobsHelper
+end

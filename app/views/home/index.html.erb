@@ -1,0 +1,505 @@
+<%
+if user_signed_in?
+	if current_user.phone.nil? || current_user.phone == ""
+%>
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".extend_information_pop").css({
+		'top'	: $('body').scrollTop() + parseInt($(window).height()/2) - parseInt($('.extend_information_pop').height()/2),
+		'left'	: parseInt($(window).width()/2) - parseInt($('.extend_information_pop').width()/2)
+	}).show();
+	
+	$(window).resize(function(){
+		if($('.extend_information_pop').css('display') != 'none'){
+			$(".extend_information_pop").css({
+				'top'	: $('body').scrollTop() + parseInt($(window).height()/2) - parseInt($('.extend_information_pop').height()/2),
+				'left'	: parseInt($(window).width()/2) - parseInt($('.extend_information_pop').width()/2)
+			});
+		}
+	});
+	
+	$(window).scroll(function(){
+		if($('.extend_information_pop').css('display') != 'none'){
+			$(".extend_information_pop").css({
+				'top'	: $('body').scrollTop() + parseInt($(window).height()/2) - parseInt($('.extend_information_pop').height()/2),
+				'left'	: parseInt($(window).width()/2) - parseInt($('.extend_information_pop').width()/2)
+			});
+		}
+	});
+	
+	$('#extend_information_form').submit(function(e){
+		e.preventDefault();
+		if($("#exform_name").val()== ""){
+			alert("이름을 입력해주세요.");			
+		}else if($("#exform_email").val() == ""){
+			alert("이메일을 입력해주세요.");
+		}else if($("#exform_phone").val() == ""){
+			alert("핸드폰 번호를 입력해주세요.");
+		}else{
+		    $.ajax({
+		      type: "PUT",
+		      url: "/users/"+$("#exform_id").val()+".json",
+		      data: {
+				  'user[uid]': $('#exform_uid').val(), 
+				  'user[name]': $('#exform_name').val(),
+				  'user[email]': $('#exform_email').val(),
+				  'user[phone]': $('#exform_phone').val(),
+				  'user[data]': $('#exform_introduce').val()
+			  },
+		      dataType: "json",
+		      headers: {
+		        'X-Transaction': 'POST Example',
+		        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+		      },
+		      success: function(data){
+				  alert("정보가 수정되었습니다. 감사합니다.");
+				  $(".extend_information_pop").hide();
+		      }
+		    });
+		}
+	});
+	
+	$(".extend_information_close").click(function(){
+		$(".extend_information_pop").hide();
+	});
+});
+</script>
+<%
+	end	
+end
+%>
+
+<script>
+var prog_current = 1;
+var prog_total_count = <%= @jobs_count %>;
+$(document).ready(function(){
+	/* 초기 Ajax 공지사항 불러오기 */
+	ajax_prog_today();
+	pagination_reload();
+	
+	
+	$(".prog-pagination .prog-pagination-next").click(function(){
+		var prog_page_count = parseInt(prog_total_count/4) + 1;
+		if(prog_total_count%4 == 0){
+			prog_page_count--;
+		}
+		
+		if( prog_current+1 <= prog_page_count ){
+			prog_current++;
+			ajax_prog_today();
+			pagination_reload();
+		}
+	});
+	
+	$(".prog-pagination").on("click", ".prog-pagination-numbers", function(){
+		if(prog_current != parseInt($(this).html()) ){
+			prog_current = parseInt($(this).html());
+			ajax_prog_today();
+		}
+		$(".prog-pagination .prog-pagination-numbers").removeClass("pagination-current");
+		$(this).addClass("pagination-current");
+	});
+	
+	$(".prog-pagination .prog-pagination-prev").click(function(){
+		if(prog_current-1 > 0){
+			prog_current--;
+			ajax_prog_today();
+			pagination_reload();
+		}
+	});
+});
+
+function pagination_reload(){
+	$(".prog-pagination .prog-pagination-numbers").remove();
+	var prog_offset = parseInt(prog_current/5) + 1;
+	if(prog_current%5 == 0){
+		prog_offset--;
+	}
+	
+	for(var i=((prog_offset-1)*5); i<(prog_offset)*5; i++){
+		if(i < parseInt(prog_total_count/4)){
+			if((i+1) == prog_current){
+				$("<li class='prog-pagination-numbers pagination-current'>"+(i+1)+"</li>").insertBefore(".prog-pagination .prog-pagination-next");
+			}else{
+				$("<li class='prog-pagination-numbers'>"+(i+1)+"</li>").insertBefore(".prog-pagination .prog-pagination-next");
+			}
+		}
+	}
+}
+
+function ajax_prog_today(){	
+    $.ajax({
+      type: "GET",
+      url: "/jobs/"+prog_current+"/today_jobs.json",
+      data: { 
+	  },
+      dataType: "json",
+      success: function(data){
+		  prog_total_count = data.count;
+		  for(var i=0; i<data.jobs.length; i++){
+			  var progEl = $("ul.prog-list li").eq(i);
+			  var started_at = data.jobs[i].started_at.replace(/-/gi, ".");
+			  var finished_at = data.jobs[i].finished_at.replace(/-/gi, ".");
+			  progEl.attr("data-mentor", data.jobs[i].mentor_id).attr("data-work", data.jobs[i].id);
+			  progEl.find(".prog-date .date").html(started_at.substring(0, 10) + " ~ " + finished_at.substring(0, 10));
+			  progEl.find(".prog-date .new").show();
+			  progEl.find(".prog-subject").children().eq(0).html(data.jobs[i].title);
+			  progEl.find(".prog-subject").children().eq(1).html("-");
+			  progEl.find(".prog-subject").children().eq(2).html(data.jobs[i].name);
+			  progEl.find(".prog-subject").children().eq(3).html("멘토");
+		  }
+		  
+		  for(var i= 0; i<(4 - data.jobs.length); i++){
+			  var progEl = $("ul.prog-list li").eq(4-(i+1));
+			  progEl.attr("data-mentor", "").attr("data-work", "");
+			  progEl.find(".prog-date .date").html("");
+  			  progEl.find(".prog-date .new").hide();
+			  progEl.find(".prog-subject").children().eq(0).html("");
+			  progEl.find(".prog-subject").children().eq(1).html("");
+			  progEl.find(".prog-subject").children().eq(2).html("");
+			  progEl.find(".prog-subject").children().eq(3).html("");
+		  } 
+      }
+    });
+}
+</script>
+<div class="grid row-about">
+  <div class="about-ff">
+    <%= link_to image_tag("about-ff.png"), "home/guide"  %></a>
+  </div>
+  <div class="notice">
+    <div class="notice-icon">
+      <%= link_to image_tag("notice_icon.png"), notices_path %>
+    </div>
+    <div class="notice-ticker">
+      <ul class="notice-contents">
+        <% @notices.each do |notice| %>
+          <li>
+            <div><%= link_to notice.title, notices_path %></div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="grid row-news">
+  <div class="slider">
+    <ul class="bxslider">
+      <% @banners.each do |banner| %>
+        <li>
+          <%= image_tag(banner.banner_image, title: banner.title) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+  <div class="today-prog">
+    <div class="title">
+      <%= image_tag("prog_title.png", width:"289px")%>
+    </div>
+    <ul class="prog-list">
+      <% @jobs.each do |job|%>
+      <li class="prog-list-item" data-mentor="<%= job.mentor_id %>" data-work="<%= job.id %>">
+        <div class="prog-date">
+          <span class="date"><%= job.started_at.strftime("%Y.%m.%d") unless job.started_at.nil? %> ~ 
+          <%= job.finished_at.strftime("%Y.%m.%d") unless job.finished_at.nil? %></span>
+          <span class="new"><%= image_tag("icon_prog_new.png") %></span>
+        </div>
+        <div class="prog-subject">
+          <span><%= job.title%></span>
+          <span class="spacer">-</span>
+          <span><%= job.mentor.name %></span>
+          <span>멘토</span>
+        </div>
+      </li>
+      <% end %>
+	  <% if @jobs_count < 4 %>
+		  <% for @jobs_count in 0..4-@jobs_count %>
+		      <li class="prog-list-item" data-mentor="" data-work="">
+		        <div class="prog-date">
+		          <span class="date"></span>
+		          <span class="new" style="display:none;"><%= image_tag("icon_prog_new.png") %></span>
+		        </div>
+		        <div class="prog-subject">
+		          <span></span>
+		          <span class="spacer"></span>
+		          <span></span>
+		          <span></span>
+		        </div>
+		      </li>
+		  <% end %>
+	  <% end %>
+    </ul>
+	<ul class="prog-pagination">
+		<li class="prog-pagination-prev"><%= image_tag "btn_today_prog_prev.png"%></li>
+		<li class="prog-pagination-next"><%= image_tag "btn_today_prog_next.png"%></li>
+	</ul>
+  </div>
+</div>
+<div class="grid">
+	<div class="grid-title">
+		<%= image_tag "grid_title.png"%>	
+	</div>
+	<div class="search-bar">
+		<div class="search-category">
+			<ul>
+        <li class="menu-item-all">
+          <%= image_tag "search_mentor_all_hover.png" %>
+        </li>
+				<li class="menu-mentor-all">
+          <%= image_tag "search_category_all.png" %>
+				</li>
+				<li class="menu-item" data-id="식량">
+          <%= image_tag "search_category_0.png" %>
+				</li>
+				<li class="menu-item" data-id="채소">
+          <%= image_tag "search_category_1.png" %>
+				</li>
+				<li class="menu-item" data-id="과수">
+          <%= image_tag "search_category_2.png" %>
+				</li>
+				<li class="menu-item" data-id="특작">
+          <%= image_tag "search_category_3.png" %>
+				</li>
+				<li class="menu-item" data-id="기타">
+          <%= image_tag "search_category_4.png" %>
+				</li>
+			</ul>
+		</div>
+		
+		<div class="search-datepicker">
+			<div class="datepicker-custom">
+				<p id="datepickDisp" style="display:none"><span id="today-month">9</span>월 <span id="today-date">24</span>일 ~ <span id="target-month">10</span>월 <span id="target-date">4</span>일</p>
+				<p id="datepickNonDisp">날짜를 선택해주세요.</p>
+			</div>
+			<div class="datepicker-option">
+				<ul>
+					<li>
+						<input type="hidden" id="datepicker"/>
+						<%#= image_tag "btn_calendar_view.png"%>
+					</li>
+				</ul>
+				
+				<input type="hidden" name="date-target" value=""/>
+			</div>
+		</div>
+	</div>
+	<div class="search-result">
+		<ul>
+			<% i = 1 %>
+			<% @users.each do |user| %>
+			<% if user.work_startday == "" %>
+				<li class="mentor-item disable" data-href="<%= user.id %>" data-id="<%= user.work_categories %>" data-day="<%= user.work_startday %>" style="display:none;">
+			<% else %>
+	      <% if i % 6 == 0 %>
+	        <li class="mentor-item last-item" data-href="<%= user.id %>" data-id="<%= user.work_categories %>" data-day="<%= user.work_startday %>">
+	      <% else %>
+	  			<li class="mentor-item" data-href="<%= user.id %>" data-id="<%= user.work_categories %>" data-day="<%= user.work_startday %>">
+	      <% end%>
+      <% i = i + 1 %>
+	  <% end %>
+  				<div class="mentor-wrapper">
+  					<div class="mentor-thumbnail">
+              <% unless user.nil? %>
+                <% unless user.avatar.nil?%>
+                  <%= image_tag user.avatar %>
+                <% else %>
+                  <%= image_tag "dummy_mentor.png" %>
+                <% end %>
+              <% else %>
+                <%= image_tag "dummy_mentor.png" %>
+              <% end %>
+  					</div>
+  					<div class="mentor-summary">
+  						<div class="summary-bg"></div>
+  						<%= image_tag "green_label_blank.png", class:"green-label" %>
+  						<div class="summary-content">
+  							<div class="summary-title">
+                  <% unless user.nil? %>
+                      <% unless user.name.nil?%>
+                        <%= user.name %>&nbsp;멘토
+                        <% else %>
+                        멘토 이름 등록 필요
+                      <% end %>
+                    <% else %>
+                      멘토 등록 필요
+                  <% end %>
+                </div>
+  							<div class="summary-category">
+  								<ul>
+                    <li><%#= user.jobs.first.category unless user.jobs.first.category.nil? %></li>
+  								</ul>
+  								<div class="category-count">
+  									<!-- 총 3건 진행 중 -->
+                    진행중
+  								</div>
+  							</div>
+                <%# unless user.jobs.first.started_at.nil?%>
+  							  <div class="summary-term">
+                    <%#= user.jobs.first.started_at.strftime("%Y. %m. %d")%>~<%#= user.jobs.first.finished_at.strftime("%m. %d")%>
+                  </div>
+                <%# end %>
+  						</div>
+  					</div>
+  					<div class="mentor-indicator selected"></div>
+  					<div class="mentor-indicator disabled"></div>
+  				</div>
+  			</li>
+      <% end %>		
+
+			<li id="mentor-detail-wrapper">
+				<div class="mentor-title">
+					<span></span>
+					<%=image_tag "detail_close.png", id:"detail-close"%>
+				</div>
+				<div class="mentor-detail-ajax">
+					<%=image_tag "ajax-loader.gif"%>
+					<p>멘토 정보를 가져오는 중입니다. 잠시만 기다려주세요.</p>
+				</div>
+				<div class="mentor-desc">
+					<span>
+					</span>
+					<%= image_tag "join_mentoring.png", id:"join-btn"%>
+				</div>
+				<div id="join-popup">
+					<%#= image_tag "join_popup.png", usemap:"#joinpopup"%>
+					<!-- <map id="joinpopup" name="joinpopup">
+						<area shape="rect" alt="확인" title="" coords="119,170,219,196" href="javascript:JoinConfirm()" target="" />
+						<area shape="rect" alt="닫기" title="" coords="280,0,338,50" href="javascript:CloseJoinPopup()" target="" />
+					</map> -->
+					<div id="join-pop-close" style="position:absolute;right:3px;top:0px;width:46px;height:44px;cursor:pointer;">
+					</div>
+					<p id="mentor-join-phone">010-8782-1611</p>
+					<%= link_to image_tag("btn_joinpop_confirm.png"), "#", class: "job_application", title: "" %>
+				</div>
+				<div class="mentor-category">
+					<ul class="category-tab">
+						<li class="open selected"><span>식량</span><%= image_tag "tab_indicator.png"%></li>
+						<li><span>채소</span><%= image_tag "tab_indicator.png"%></li>
+						<li class="open"><span>과수</span><%= image_tag "tab_indicator.png"%></li>
+						<li><span>특작</span><%= image_tag "tab_indicator.png"%></li>
+						<li><span>기타</span><%= image_tag "tab_indicator.png"%></li>
+					</ul>
+					<div class="etc-bar" style="margin-top:-1px; background: #919191; height:1px;"></div>
+					<div class="mentor-detail-left">
+						<div class="mentor-info-table">
+							<ul>
+								<li>
+									<span class="info-label">작업명</span>
+									<span class="info-content"></span>
+								</li>
+								<li>
+									<span class="info-label">교육일정</span>
+									<span class="info-content">~</span>
+								</li>
+								<li>
+									<span class="info-label">일 할 시간</span>
+									<span class="info-content"></span>
+								</li>
+								<li>
+									<span class="info-label">교육시간</span>
+									<span class="info-content">시간</span>
+								</li>
+								<li>
+									<span class="info-label">필요인원</span>
+									<span class="info-content">명</span>
+								</li>
+								<li>
+									<span class="info-label">난이도</span>
+									<span class="info-content"></span>
+								</li>
+								<li>
+									<span class="info-label">일당</span>
+									<span class="info-content">원</span>
+								</li>
+								<li>
+									<span class="info-label">장소</span>
+									<span class="info-content"></span>
+								</li>
+				                <li>
+					                <span class="info-label">설명</span>
+		      						<span class="info-content"></span>
+				                </li>
+							</ul>
+              
+							<div class="mentor-image">
+								
+							</div>
+						</div>
+					</div>
+					<div class="mentor-detail-right">
+						<div class="mentor-region-addr">
+
+						</div>
+						<div id="mentor-region-map">
+              <p style="display:hidden;"></p>
+						</div>
+					</div>
+				</div>
+				<div class="mentor-category-none" style="display:none;padding:10px 0px 10px 30px;font-weight:bolder;">
+					현재 작물이 없습니다.
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<script>
+$(function() {
+    $.datepicker.regional['ko'] = {
+     closeText: '닫기',
+     currentText: '오늘',
+     monthNames: ['1월','2월','3월','4월','5월','6월',
+     '7월','8월','9월','10월','11월','12월'],
+     monthNamesShort: ['1월','2월','3월','4월','5월','6월',
+     '7월','8월','9월','10월','11월','12월'],
+     dayNames: ['일','월','화','수','목','금','토'],
+     dayNamesShort: ['일','월','화','수','목','금','토'],
+     dayNamesMin: ['일','월','화','수','목','금','토'],
+     weekHeader: 'Wk',
+     dateFormat: 'yy-mm-dd',
+     firstDay: 0,
+     isRTL: false,
+     duration:0,
+     // showAnim:'show',
+     showMonthAfterYear: true,
+     yearSuffix: '년'};
+         $.datepicker.setDefaults($.datepicker.regional['ko']);
+		 
+	$("#datepicker").datepicker({
+		showOn: "button",
+		buttonImage: "<%= asset_path("btn_calendar_view.png") %>",
+		buttonImageOnly: true
+	});
+	
+	$("#join-btn").click(function() {
+		<% if user_signed_in? %>
+		// alert(<%#=current_user.id%> + " " + <%#=form_authenticity_token%>);
+			$("#join-popup").show();
+		<% else %>
+			alert("페이스북 로그인이 필요합니다.");
+		<% end %>
+	});
+});
+
+function CloseJoinPopup() {
+	$("#join-popup").hide();
+}
+
+function JoinConfirm() {
+	if(confirm("참여하시겠습니까?")) {
+		$.ajax({
+			'url':'/jobs/11/join',
+			'dataType':'json',
+			'data':{},
+			'success':function(data){
+				if(data.result == true){
+					alert("참여예약 완료되었습니다.");
+				}else{
+					alert("참여예약에 실패했습니다.");
+				}
+			}
+		});
+	}
+	CloseJoinPopup();
+}
+  </script>

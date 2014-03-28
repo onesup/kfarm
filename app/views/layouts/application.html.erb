@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+  <meta charset="UTF-8" />
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" /> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- meta property for facebook share link -->
+  <meta property="og:image" content="<%= asset_path('logo.png') %>" />
+  <meta property="og:site_name" content="팜팜멘토(farmfarmmentor)"/>
+  <meta property="og:title" content="팜팜 멘토에 오신 것을 환영합니다." />
+  <meta property="og:description" content="농촌형 멘토-멘티 매칭 네트워크를 지향합니다." />
+  
+  <title>팜팜멘토</title>
+  <!-- <link rel="shortcut icon" href="" /> -->
+  <link rel="profile" href="http://gmpg.org/xfn/11" />
+  <!--[if lt IE 9]>
+  	<script src="./js/html5.js" type="text/javascript"></script>
+  <![endif]-->
+  
+  <%= stylesheet_link_tag    "http://api.mobilis.co.kr/webfonts/v2/css/NanumGothicWeb" %>
+  <%= stylesheet_link_tag    "http://api.mobilis.co.kr/webfonts/v2/css/NanumGothicBoldWeb" %>
+
+  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tags %>
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+  <script src="http://www.google.com/jsapi"></script>
+  <script>
+   google.load( "webfont", "1" );
+   google.setOnLoadCallback(function() {
+    WebFont.load({ custom: {
+     families: [ "NanumGothic" ],
+     urls: [ "http://fontface.kr/NanumGothic/css" ]
+    }});
+   });
+  </script>
+  <script type="text/javascript">
+  $(document).ready(function(){
+  	$("#leftmenu-introduce img").mouseenter(function() {
+  		$(this).attr("src", '<%= asset_path("leftmenu_introduce_over.png") %>');
+  	}).mouseleave(function() {
+  		$(this).attr("src", '<%= asset_path("leftmenu_introduce.png") %>');
+  	});
+
+  	$("#leftmenu-notice img").mouseenter(function() {
+  		$(this).attr("src", '<%= asset_path("leftmenu_notice_over.png") %>');
+  	}).mouseleave(function() {
+  		$(this).attr("src", '<%= asset_path("leftmenu_notice.png") %>');
+  	});
+
+  	$("#leftmenu-review img").mouseenter(function() {
+  		$(this).attr("src", '<%= asset_path("leftmenu_review_over.png") %>');
+  	}).mouseleave(function() {
+  		$(this).attr("src", '<%= asset_path("leftmenu_review.png") %>');
+  	});
+
+  	$("#leftmenu-faq img").mouseenter(function() {
+  		$(this).attr("src", '<%= asset_path("leftmenu_faq_over.png") %>');
+  	}).mouseleave(function() {
+  		$(this).attr("src", '<%= asset_path("leftmenu_faq.png") %>');
+  	});  
+  });
+  </script>
+</head>
+<body>
+  <div id="page">
+    <div id="content">
+      <div id="sidebar">
+        <ul class="sidebar-menu">
+          <li class="sidebar-menu-item main-logo">
+            <%= link_to image_tag("logo.png"), root_path %></a>
+          </li>
+          <li class="sidebar-menu-item" id="leftmenu-introduce">
+            <%= link_to image_tag("leftmenu_introduce.png"), home_guide_path %></a>
+          </li>
+          <li class="sidebar-menu-item" id="leftmenu-notice">
+            <%= link_to image_tag("leftmenu_notice.png"), notices_path %></a>
+          </li>
+          <li class="sidebar-menu-item" id="leftmenu-review">
+            <%= link_to image_tag("leftmenu_review.png"), reviews_path %></a>
+          </li>
+          <li class="sidebar-menu-item" id="leftmenu-faq">
+            <%= link_to image_tag("leftmenu_faq.png"), "/faq" %></a>
+          </li>
+		  
+          <li class="sidebar-menu-item banner">
+            <%= link_to image_tag("left_help_benner.png"), faq_index_path %></a>
+          </li>
+        </ul>
+      </div>
+      <div id="safe-area">
+        <div class="header">
+          <ul class="header-menu">
+			  <li id="header-admin-menu">
+          <% if user_signed_in? %>
+            <%= link_to("관리자영역", admin_path) if current_user.role.name == "admin" %>
+            <%= link_to("멘트링 프로그램 등록", mentor_path) if current_user.role.name == "mentor" %>
+            <%#= link_to("내 정보 수정", user_path(current_user)) if current_user.role.name == "mentee" %>
+          <% end %>
+			  </li>
+          
+            <li>
+              <a href="#"><%= render 'layouts/shared/main_nav' %></a>
+            </li>
+            <li>
+              <%= link_to image_tag("top_userguide_btn.png"), "faq"%>
+            </li>
+          </ul>
+          <p class="flash_notice"><%= notice %></p>
+          <p class="flash_alert"><%= alert %></p>
+        </div>
+        <%= yield %>
+      </div>
+    </div>
+	<div id="footer">
+		<div id="footer-content">
+			<%= image_tag "footer_copy.png", id:"footer-copy"%>
+			
+			<select id="footer-familysite">
+				<option>FamilySite</option>
+				<option value="http://www.gosunchang.com/">순창군귀농귀촌지원센터</option>
+				<option value="http://www.refarm.org/">전국귀농운동본부</option>
+			</select>
+			<%= image_tag "footer_policy.png", id:"footer-policy"%>
+		</div>
+	</div>
+	<% if user_signed_in? %>
+		<div class="extend_information_pop" style="display:none;">
+			<div class="extend_information_close" style="width:50px;height:47px;position:absolute;right:0px;top:0px;cursor:pointer;">
+			</div>
+			<form id="extend_information_form">
+				<input type="hidden" id="exform_id" name="exform_id" value="<%= current_user.id %>" />
+				<input type="text" id="exform_name" name="exform_name" value="<%= current_user.name %>" />
+				<input type="text" id="exform_email" name="exform_email" value="<%= current_user.email %>" />
+				<input type="text" id="exform_phone" name="exform_phone" value="<%= current_user.phone %>" />
+				<!-- <input type="text" id="exform_introduce" name="exform_introduce" value="<%= current_user.data %>" /> -->
+				<textarea id="exform_introduce" name="exform_introduce"><%= current_user.data %></textarea>
+				<!-- <input type="submit" id="exform_submit" value="제출" /> -->
+				<input type="image" id="exform_submit" src="<%= asset_path("btn_exform_submit.png") %>" />
+			</form>
+		</div>
+	<% end %>
+  </div>
+</body>
+</html>
+
+
+

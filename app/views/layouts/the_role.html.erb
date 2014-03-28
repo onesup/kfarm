@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>팜팜멘토 관리자::사용자 역할 관리</title>
+  <%= stylesheet_link_tag    "the_role", media: "all", "data-turbolinks-track" => true %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <div class="container">
+    <div>
+      <h1><%= link_to "관리자 메뉴로 돌아가기", admin_path %></h1>
+    </div>
+    <%= render 'layouts/shared/main_nav' %>
+    <div class="row">
+      <div class="span12 header">
+        <h2>사용자 역할 관리</h2>
+      </div>
+    </div>
+    <div class="row">    
+      <div class="span2 manage_panel">
+        <%= yield :role_sidebar%>
+      </div>
+      <div class="span10">
+        <%= yield :role_main%>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

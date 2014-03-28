@@ -1,0 +1,12 @@
+development:
+  :app_id: "628812140486031"
+  :app_secret: "cbe8247ebc90425d3a5a159cb19e0de2"
+  :sms_key: "ODcwLTEYjU1Nzlm"
+test:
+  :app_id: "628812140486031"
+  :app_secret: "cbe8247ebc90425d3a5a159cb19e0de2"
+  :sms_key: "ODcwLYjU1Nzlm"
+production:
+  :app_id: "170082673185053"
+  :app_secret: "e0ac4b921c25655eeed3ea09f9159c45"
+  :sms_key: "ODcw1Nzlm"

@@ -1,0 +1,50 @@
+
+<div class="page-title">
+  <div class="page-icon">
+	  <%= image_tag "review_icon.png"%>
+  </div>
+  <div class="title-name">
+    <%=image_tag "review/title_review_w.png"%>
+  </div>
+</div>
+
+<div class="blank">
+  <%= image_tag "review/label_review_w.png" %>
+</div>
+
+<div class="wrapper">
+  <div class="reviewsWrite">
+    <br />
+    <%= simple_form_for @review do |f| %>
+    <%= f.hidden_field :user_id, :value => current_user.id %>
+      <table border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="130">후기작성 선택</td>
+          <td>
+            <%= f.collection_select(:job_id, @jobs, :id, :title_with_mentor, prompt: "선택") %>
+          </td>
+        </tr>
+        <tr>
+          <td>제목</td>
+          <td>
+            <%= f.input :title, width: "380px", label: false%>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" class="textarea">
+            <%= f.input :contents, label: false, as: :text, :input_html => {} %>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" class="submit">
+            <%= image_submit_tag("review/btn_submit.png", class: "button", id: "review_submit") %>
+            <%= link_to image_tag("review/btn_cancel.png"), reviews_path %>
+          </td>
+        </tr>
+      </table>
+    <% end %>
+    <br />
+    <div class="clear"></div>
+  </div>
+</div>   
+

@@ -1,0 +1,142 @@
+
+<div class="row-fluid">
+    <!-- block -->
+    <div class="block">
+        <div class="navbar navbar-inner block-header">
+            <div class="muted pull-left"><%= @job.title %> 멘토링 프로그램</div>
+        </div>
+        <div class="block-content collapse in">
+            <div class="span12">
+                 <form class="form-horizontal">
+                  <fieldset>
+                    <legend>기본정보</legend>
+                    <div class="control-group">
+                      <label class="control-label" for="select01">종류</label>
+                      <div class="controls">
+                        <span class="input-xlarge uneditable-input"><%= @job.category %></span>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label">교육내용</label>
+                      <div class="controls">
+                        <span class="input-xlarge uneditable-input"><%= @job.contents %></span>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label" for="date01">일정</label>
+                      <div class="controls">
+                        <span class="input-xlarge uneditable-input"><%= @job.started_at %></span>
+                        ~
+                        <span class="input-xlarge uneditable-input"><%= @job.finished_at %></span>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label">교육시간</label>
+                      <div class="controls">
+                        <span class="input-xlarge uneditable-input"><%= @job.learning_time %></span> 시간
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label">시작시각 ~ 종료시각</label>
+                      <div class="controls">
+                        <span class="input-xlarge uneditable-input"><%= @job.start_time %></span>시
+                        ~
+                        <span class="input-xlarge uneditable-input"><%= @job.finish_time %></span>시
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label" for="selectError">난이도</label>
+                      <div class="controls">
+                        <span class="input-xlarge uneditable-input"><%= @job.level %></span>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label" for="focusedInput">필요인원</label>
+                      <div class="controls">
+                        <span class="input-xlarge uneditable-input"><%= @job.workers_count %></span> 명
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label" for="focusedInput">일당</label>
+                      <div class="controls">
+                        <span class="input-xlarge uneditable-input"><%= @job.pay %></span> 원
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label" for="focusedInput">장소</label>
+                      <div class="controls">
+                        <span class="input-xlarge uneditable-input"><%= @job.location %></span>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label" for="focusedInput">주소</label>
+                      <div class="controls">
+                        <span class="input-xlarge uneditable-input"><%= @job.address %></span>
+                      </div>
+                    </div>
+                    
+                    <legend>멘티 명단</legend>
+                    <div class="control-group">
+                      <label class="control-label" for="focusedInput">멘티 명단</label>
+                      <div class="controls">
+                        <ul class="metees">
+                          <% @job.mentees.each do |mentee| %>
+                            <li>
+                              <span><%= link_to mentee.name, admin_user_path(mentee) %></span>
+                              <span>전화번호: <%= mentee.phone %></span>
+                            </li>
+                          <% end %>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="form-actions">
+                      <%= link_to "목록으로", mentor_jobs_path, class: "btn"%>
+                      <%= link_to "수정", edit_mentor_job_path(@job), class: "btn btn-primary"%>
+                    </div>
+                  </fieldset>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <!-- /block -->
+</div>
+
+<link href="/assets/vendors/datepicker.css" rel="stylesheet" media="screen">
+<link href="/assets/vendors/chosen.min.css" rel="stylesheet" media="screen">
+
+<script src="/assets/vendors/jquery-1.9.1.js"></script>
+<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="/assets/vendors/jquery.uniform.min.js"></script>
+<script src="/assets/vendors/chosen.jquery.min.js"></script>
+<script src="/assets/vendors/bootstrap-datepicker.js"></script>
+<script src="/assets/vendors/wysiwyg/wysihtml5-0.3.0.js"></script>
+<script src="/assets/vendors/wysiwyg/bootstrap-wysihtml5.js"></script>
+<script src="/assets/vendors/wizard/jquery.bootstrap.wizard.min.js"></script>
+<!-- <script type="text/javascript" src="http://apis.daum.net/maps/maps3.js?apikey=405db4a3478f2fe559fd2b2d0d27856af183eb07" charset="utf-8"></script> -->
+<script type="text/javascript">
+var map;
+var startLat = 37.5374;
+var startLng = 127.004;
+function init() {
+// 지도 출력
+// map = new daum.maps.Map(document.getElementById('map'), {
+// center: new daum.maps.LatLng(startLat, startLng),
+// level: 3
+// });
+
+// 마커 출력
+// var marker = new daum.maps.Marker({
+// position: new daum.maps.LatLng(startLat, startLng)
+// });
+// marker.setMap(map);
+
+}
+
+$(function() {
+init();
+//$(".datepicker").datepicker();
+//$(".chzn-select").chosen();
+});
+</script>

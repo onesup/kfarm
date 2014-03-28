@@ -1,0 +1,66 @@
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=730237010335700";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="page-title">
+  <div class="page-icon">
+	  <%= image_tag "review_icon.png"%>
+  </div>
+  <div class="title-name">
+	  <%=image_tag "review_title.png"%>
+  </div>
+</div>
+
+<div class="blank">
+  <%= image_tag "review/label_review.png" %>
+</div>
+
+<div class="wrapper">
+  <div class="write">
+    <%= link_to image_tag("review/btn_review.png"), new_review_path %>
+  </div>
+  <% @reviews[1..2].each do |review| %>
+  <div class="bigReview">
+    <div class="image">
+      <%= link_to image_tag("dump_thumb2.png", width: "410px", height: "203px"), review_path(review) %>
+    </div>
+    <div class="title">
+      <%= image_tag("green_label_new.png") %>
+      <span class="title">
+        <%= link_to review.title, review_path(review) %>
+      </span>
+      <span class="like">
+        <div class="fb-like" data-href="<%= review_url(review) %>" data-width="55" data-layout="box_count" data-show-faces="false" data-send="false"></div>
+      </span>
+      <span class="desc">
+        <%= review.contents[0..25] %>
+      </span>
+    </div>
+  </div>
+  <% end %>
+
+<% @reviews.each do |review| %>
+  <div class="smallReview">
+    <div class="image">
+      <%= link_to image_tag("dump_thumb.png", width: "270px", height: "100px"), review_path(review) %>
+    </div>
+    <div class="title">
+      <span class="title">
+        <%= link_to review.title, review_path(review) %>
+      </span>
+      <span class="like">
+        <div class="fb-like" data-href="<%= review_url(review) %>" data-width="55" data-layout="button_count" data-show-faces="false" data-send="false"></div>
+      </span>
+    </div>
+  </div>
+<% end %>
+  <div class="clear"></div>
+</div>
+<div class="pager">
+  <%= paginate @reviews %>
+</div>

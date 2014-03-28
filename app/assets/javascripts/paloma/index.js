@@ -1,0 +1,13 @@
+//= require paloma_core.js
+//= require ./_locals.js
+//= require ./_filters.js
+//= require ./home/_manifest.js
+//= require ./faq/_manifest.js
+//= require ./reviews/_manifest.js
+//= require ./dashboard/_manifest.js
+//= require ./questions/_manifest.js
+//= require ./users/_manifest.js
+//= require ./jobs/_manifest.js
+//= require ./answers/_manifest.js
+//= require ./notices/_manifest.js
+//= require ./banners/_manifest.js

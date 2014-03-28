@@ -1,0 +1,27 @@
+<div class="page-title">
+	<%=image_tag "title_notice.png"%>
+</div>
+<div class="page-subtitle">
+	<%=image_tag "subtitle_notice.png"%>
+</div>
+<div class="expdable-table">
+  
+<% @notices.each do |notice| %>  
+	<div class="row">
+		<div class="mother">
+			<div class="number"><%= notice.id %></div>
+			<div class="title"><%= notice.title %></div>
+			<div class="pointer">
+				<%= image_tag "droppointer-down.png"%>
+			</div>
+			<div class="date"><%= notice.created_at.strftime("%Y-%m-%d")%></div>
+		</div>
+		<div class="expend">
+			<%= notice.contents %>
+		</div>
+	</div>
+<% end %>
+</div>
+<div class="pager">
+  <%= paginate @notices %>
+</div>

@@ -1,0 +1,53 @@
+(function(){
+  // You access variables from before/around filters from _x object.
+  // You can also share variables to after/around filters through _x object.
+  var _x = Paloma.variableContainer;
+
+  // We are using _L as an alias for the locals container.
+  // Use either of the two to access locals from other scopes.
+  //
+  // Example:
+  // _L.otherController.localVariable = 100;
+  var _L = Paloma.locals;
+
+  // Access locals for the current scope through the _l object.
+  //
+  // Example:
+  // _l.localMethod(); 
+  var _l = _L['faq'];
+
+
+  Paloma.callbacks['faq']['index'] = function(params){
+    $(document).ready(function(){
+      $('div.faq_wrapper > ul.list > li').click(function() {
+        $(this).find('span.detail').toggleClass('show');
+        $(this).find('span.pointer').toggleClass('down');
+    		$(this).toggleClass("active");
+      });
+	
+    	$("#btn-send").click(function(){
+    		$("#email-send").submit();
+    	});
+      
+    	$(".row-pointer").bind("click", function() {
+    		// pointer image switcher
+    		var origsrc = $(this).find("img");
+    		if(origsrc.attr('src') == '<%= asset_path("droppointer-down.png") %>') {
+    			origsrc.attr('src', '<%= asset_path("droppointer-up.png") %>');
+    		} else {
+    			origsrc.attr('src', '<%= asset_path("droppointer-down.png") %>');
+    		}
+
+    		//detail view switcher
+    		var detailview = $(this).parent().next();
+
+    		if(!detailview.is(":visible")) {
+    			detailview.show();
+    		} else {
+    			detailview.hide();
+    		}
+
+    	});
+    });
+  };
+})();

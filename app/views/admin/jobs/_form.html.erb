@@ -1,0 +1,151 @@
+<%= simple_form_for([:admin, @job]) do |f| %>
+  <% if @job.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@job.errors.count, "error") %> prohibited this job from being saved:</h2>
+
+      <ul>
+      <% @job.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+<div class="row-fluid">
+  <!-- block -->
+  <div class="block">
+    <div class="navbar navbar-inner block-header">
+        <div class="muted pull-left">멘토링 수정</div>
+    </div>
+    <div class="block-content collapse in">
+      <div class="span12">
+
+          <fieldset>
+            <legend>기본정보</legend>
+            <div class="control-group">
+            <label class="control-label" for="select01">작업명</label>
+              <%= f.input(:title, label: false, label_html:{class: "input-xlarge focused", id:"focusedInput"}) %>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="select01">멘토 선택</label>
+              <%= f.collection_select(:mentor_id, @users, :id, :name, prompt: "멘토 선택") %>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="select01">종류</label>
+              <%= f.input(:category, label: false, input_html:{class: "input-xlarge focused", id:"focusedInput"}) %>
+              <div class="controls">
+                <!-- <input class="uniform_on" type="radio" name="radio1" id="optionsCheckbox1" value="식량" checked="checked"> <label class="help-inline" for="optionsCheckbox1">식량</label>
+                <input class="uniform_on" type="radio" name="radio1" id="optionsCheckbox2" value="채소"> <label class="help-inline" for="optionsCheckbox2">채소</label>
+                <input class="uniform_on" type="radio" name="radio1" id="optionsCheckbox3" value="과수"> <label class="help-inline" for="optionsCheckbox3">과수</label>
+                <input class="uniform_on" type="radio" name="radio1" id="optionsCheckbox4" value="특용"> <label class="help-inline" for="optionsCheckbox4">특용</label>
+                <input class="uniform_on" type="radio" name="radio1" id="optionsCheckbox5" value="기타"> <label class="help-inline" for="optionsCheckbox5">기타</label> -->
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">교육내용</label>
+              <div class="controls">
+                <%= f.input(:contents, label: false, label_html:{class: "input-xlarge focused", id:"focusedInput"}) %>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="date01">일정</label>
+              <div class="controls clearfix">
+                <%= f.input(:started_at, as: :date, label: false, label_html:{class: "input focused", id:"focusedInput"}) %>
+                <span class="separator">~</span>
+                <%= f.input(:finished_at, as: :date, label: false, label_html:{class: "input focused", id:"focusedInput"}) %>
+              </div>
+              <p class="help-block">시작일과 종료일이 같을 수 있습니다.</p>
+
+            </div>
+            <div class="control-group">
+              <label class="control-label">멘토링 프로그램 시작시각</label>
+              <div class="controls">
+                <%= f.input(:start_time, label: false, label_html:{class: "input-xlarge focused", id:"focusedInput"}) %>
+                <p class="help-block">07, 09처럼 시간단위 입력.</p>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">멘토링 프로그램 종료시각</label>
+              <div class="controls">
+                <%= f.input(:finish_time, label: false, label_html:{class: "input-xlarge focused", id:"focusedInput"}) %>
+                <p class="help-block">07, 09처럼 시간단위 입력.</p>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">교육시간</label>
+              <div class="controls">
+                <%= f.input(:learning_time, label: false, label_html:{class: "input-xlarge focused", id:"focusedInput"}) %>
+                <p class="help-block">프로그램중 교육 시간이 전체 몇 시간인지 5, 7처럼 시간단위 입력.</p>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">작업시간</label>
+              <div class="controls">
+                <%= f.input(:working_time, label: false, label_html:{class: "input-xlarge focused", id:"focusedInput"}) %>
+                <p class="help-block">프로그램중 작업 시간이 전체 몇 시간인지 5, 7처럼 시간단위 입력.</p>
+              </div>
+            </div>            
+            <div class="control-group">
+              <label class="control-label" for="selectError">난이도</label>
+              <div class="controls">
+                <%= f.input(:level, label: false, label_html:{class: "input-xlarge focused", id:"focusedInput"}) %>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="focusedInput">필요인원</label>
+              <div class="controls">
+                <%= f.input(:workers_count, label: false, label_html:{class: "input-xlarge focused", id:"focusedInput"}) %>
+                <span class="help-inline">인원수 "명"단위로 표시</span>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="focusedInput">일당</label>
+              <div class="controls">
+                <%= f.input(:pay, label: false, label_html:{class: "input-xlarge focused", id:"focusedInput"}) %>
+                <span class="help-inline">인원당 일당을 "원"단위로 표시</span>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="focusedInput">장소</label>
+              <div class="controls">
+                <%= f.input(:location, label: false, label_html:{class: "input-xlarge focused", id:"focusedInput"}) %>
+                <span class="help-inline">주소나 위치를 알 수 있는 문장이나 단어.</span>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="focusedInput">주소</label>
+              <div class="controls">
+                <%= f.input(:address, label: false, label_html:{class: "input-xlarge focused", id:"focusedInput"}) %>
+                <span class="help-inline">주소(구글 지도 표시용)</span>
+              </div>
+            </div>
+            <!-- <legend>확장정보</legend>
+            <div class="control-group">
+              <label class="control-label">멘토링 내용</label>
+              <div class="controls">
+                <textarea class="input-xlarge textarea" placeholder="Enter text ..." style="width: 810px; height: 200px">우후.. 이런 가르침들이 있다네..</textarea>
+                <span class="help-inline">"교육내용"을 구체화해서 기록.</span>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">지도</label>
+              <div class="controls">
+                <div id="map" style="width:600px;height:400px;"></div><br />
+                lat:<input class="input-xlarge focused" id="mapLat" type="text" value="128.1244"><br />
+                lng:<input class="input-xlarge focused" id="mapLng" type="text" value="37.555">
+                <span class="help-inline">메인페이지 표시.</span>
+              </div>
+            </div> -->
+            <div class="form-actions">
+              <%= f.submit class: "btn btn-primary"  %>
+              <%= link_to "취소", admin_jobs_path, class: "btn"%>
+            </div>
+            <%#= f.input(:address, label_html:{class: "input-xlarge focused", id:"focusedInput"}) %>
+            <%#= f.input(:days, label_html:{class: "input-xlarge focused", id:"focusedInput"}) %>
+          </fieldset>
+      </div>
+    </div>
+  </div>
+  <!-- /block -->  
+</div>
+<% end %>

@@ -1,0 +1,98 @@
+<%= form_for([:admin, @user]) do |f| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <fieldset>
+    <legend>기본정보</legend>
+    <div class="control-group">
+      <label class="control-label">본인사진</label>
+      <div>
+        <%= image_tag @user.avatar unless @user.avatar.nil? %>
+        <span class="help-inline">size: 132x114</span>
+      </div>
+      <div class="controls">
+        <div class="uploader hover" id="uniform-fileInput">
+          <%= f.file_field :avatar %>
+        </div>
+        <span class="help-inline">메인페이지 표시.</span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="focusedInput">이름</label>
+      <div class="controls">
+        <%= f.text_field :name, id: "focusedInput", class: "input-xlarge focused"%>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">이메일</label>
+      <div class="controls">
+        <%= f.text_field :email, class: "input-xlarge focused"%>
+      </div>
+    </div>
+    <% if controller.action_name == "new" %>
+    <div class="control-group">
+      <label class="control-label">비밀번호</label>
+      <div class="controls">
+        <%= f.password_field :password, class: "input-xlarge focused"%>
+        <span class="help-inline">비번은 8자 이상</span>
+      </div>
+    </div>
+    <% end %>
+    <div class="control-group">
+      <label class="control-label">페이스북 주소</label>
+      <div class="controls">
+        <%= f.text_field :uid, class: "input-xlarge focused", placeholder: "예)http://facebook.com/onesup"%>
+        <span class="help-inline">페이스북 로그인을 위해 반드시 필요.</span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">전화번호</label>
+      <div class="controls">
+        <%= f.text_field :phone, class: "input-xlarge focused"%>
+      </div>
+    </div>
+    <div class="control-group warning">
+      <label class="control-label" for="selectError">권한그룹</label>
+      <div class="controls">
+        <%= f.collection_select(:role_id, Role.all.collect, :id, :name, prompt: "권한 선택") %>
+      </div>
+    </div>
+    <legend>멘토정보 (멘토그룹만 필요)</legend>
+    <div class="control-group">
+      <label class="control-label" for="focusedInput">주요작물</label>
+      <div class="controls">
+        <%= f.text_field :mentor_major, class: "input-xlarge focused"%>
+        <span class="help-inline">검색시 활용됨.</span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">소개글</label>
+      <div class="controls">
+        <%= f.text_area :mentor_guide, class: "input-xlarge focused"%>
+        <span class="help-inline">멘토정보에 포함됨.</span>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label">농장사진</label>
+      <div class="controls">
+        <div class="uploader hover" id="uniform-fileInput">
+          <%= f.file_field :farm %>
+        </div>
+        <span class="help-inline">멘토정보에 표시.</span>
+      </div>
+    </div>
+    <div class="form-actions">
+      <%= f.submit class: "btn btn-primary"  %>
+      <%= link_to "취소", admin_path, class: "btn"%>
+    </div>
+  </fieldset>
+
+<% end %>

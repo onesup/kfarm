@@ -1,0 +1,73 @@
+<div class="row-fluid">
+    <!-- block -->
+    <div class="block">
+        <div class="navbar navbar-inner block-header">
+            <div class="muted pull-left">후기 "<%= @review.title%>" 정보 보기</div>
+        </div>
+        <div class="block-content collapse in">
+            <div class="span12">
+                 <form class="form-horizontal">
+                  <fieldset>
+
+                    <div class="control-group">
+                      <label class="control-label" for="focusedInput">제목</label>
+                      <div class="controls">
+                        <span class="input-xlarge uneditable-input">
+                          <%= @review.title%>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label">내용</label>
+                      <div class="controls">
+                        <span class="input-xlarge uneditable-input"><%= @review.contents %></span>
+                      </div>
+                    </div>
+
+                    <div class="control-group">
+                      <label class="control-label">등록일시</label>
+                      <div class="controls">
+                        <span class=""><%= @review.created_at %></span>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label">등록회원정보</label>
+                      <div class="controls">
+                        <% unless @review.user.nil? %>
+                          <span class="">
+                            <%= link_to @review.user.name, admin_user_path(@review.user) %>
+                          </span>
+                        <% end %>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label">해당 멘토링</label>
+                      <div class="controls">
+                        <% unless @review.user.nil? %>
+                          <span class="">
+                            <%= link_to @review.user.name, admin_user_path(@review.user) %>
+                          </span>
+                        <% end %>
+                      </div>
+                    </div>
+                    <div class="control-group">
+                      <label class="control-label">해당 멘토링</label>
+                      <div class="controls">
+                        <% unless @review.user.nil? %>
+                          <span class="">
+                            <%= link_to @review.job.title, admin_job_path(@review.job) %>
+                          </span>
+                        <% end %>
+                      </div>
+                    </div>
+                    <div class="form-actions">
+                      <%= link_to "목록으로", admin_reviews_path, class: "btn"%>
+                      <%= link_to "수정", edit_admin_review_path(@review), class: "btn btn-primary"%>
+                    </div>
+                  </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- /block -->
+</div>

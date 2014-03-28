@@ -1,0 +1,93 @@
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=730237010335700";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="page-title">
+  <div class="page-icon">
+	  <%= image_tag "review_icon.png"%>
+  </div>
+  <div class="title-name">
+    <%=image_tag "review/title_review_r.png"%>
+  </div>
+</div>
+
+<div class="blank">
+  <%= image_tag "review/label_review.png" %>
+</div>
+
+<div class="wrapper">
+  <div class="reviewsHeader">
+    <div class="title"><%= @review.title %></div>
+    <div class="regDate"><%= @review.created_at.strftime("%Y.%m.%d") %></div>
+    <div class="like"><div class="fb-like" data-href="<%= review_url(@review) %>" data-width="55" data-layout="button_count" data-show-faces="false" data-send="false"></div></div>
+  </div>
+  <div class="desc"><%= @review.contents %> </div>
+  <div class="info">
+    <div class="mentor">
+      <span class="name">멘토이름</span>
+      <span class="image">
+        <%= image_tag @user.avatar.url unless @user.avatar.nil? %>
+      </span>
+      <span class="intro"><%= @user.name %></span>
+    </div>
+    <div class="details">
+      <ul>
+        <li>
+          <span class="bullet">▶</span>
+          <span class="subject">교육내용</span>
+          <span class="data"><%= @job.contents %></span>
+          <div class="clear"></div>
+        </li>
+        <li>
+          <span class="bullet">▶</span>
+          <span class="subject">교육일정</span>
+          <span class="data"><%= @job.started_at.strftime("%Y-%m-d")%> ~ <%= @job.finished_at.strftime("%Y-%m-%d")%></span>
+          <div class="clear"></div>
+        </li>
+        <li>
+          <span class="bullet">▶</span>
+          <span class="subject">교육시간</span>
+          <span class="data"><%= @job.learning_time %></span>
+          <div class="clear"></div>
+        </li>
+        <li>
+          <span class="bullet">▶</span>
+          <span class="subject">난이도</span>
+          <span class="data"><%= @job.level %></span>
+          <div class="clear"></div>
+        </li>
+        <li>
+          <span class="bullet">▶</span>
+          <span class="subject">일당</span>
+          <span class="data"><%= @job.pay %></span>
+          <div class="clear"></div>
+        </li>  
+        <li>
+          <span class="bullet">▶</span>
+          <span class="subject">장소</span>
+          <span class="data"><%= @job.location %></span>
+          <div class="clear"></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="clear"></div>
+  <div class="button">
+    <!-- <a href="#"><%=image_tag "review/btn_write.png"%></a> -->
+  </div>
+
+
+  <div class="clear"></div>
+</div>   
+
+
+
+
+
+<p id="notice"><%= notice %></p>
+

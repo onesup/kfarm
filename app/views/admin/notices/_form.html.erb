@@ -1,0 +1,48 @@
+<%= form_for([:admin, @notice]) do |f| %>
+  <% if @notice.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@notice.errors.count, "error") %> prohibited this notice from being saved:</h2>
+
+      <ul>
+      <% @notice.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="row-fluid">
+      <!-- block -->
+      <div class="block">
+          <div class="navbar navbar-inner block-header">
+              <div class="muted pull-left">공지사항 "<%= @notice.title %>" 정보 수정</div>
+          </div>
+          <div class="block-content collapse in">
+              <div class="span12">
+                   <form class="form-horizontal">
+                    <fieldset>
+                      
+                      <div class="control-group">
+                        <label class="control-label" for="focusedInput">제목</label>
+                        <div class="controls">
+                          <%= f.text_field :title, id: "focusdInput", class: "input-xlarge focused" %>
+                        </div>
+                      </div>
+                      <div class="control-group">
+                        <label class="control-label">내용</label>
+                        <div class="controls">
+                          <%= f.text_area :contents, id: "focusdInput", class: "input-xlarge focused", style: "width: 600px; height: 200px" %>  
+                          <span class="help-inline">HTML 사용 가능.</span>
+                        </div>
+                      </div>
+                      <div class="form-actions">
+                        <%= f.submit class: "btn btn-primary"  %>
+                        <%= link_to "취소", admin_path, class: "btn"%>
+                      </div>
+                    </fieldset>
+                  </form>
+              </div>
+          </div>
+      </div>
+      <!-- /block -->
+  </div>
+<% end %>
