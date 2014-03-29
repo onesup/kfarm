@@ -16,7 +16,7 @@ module Kfarm
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'devise', '*.{rb,yml}').to_s]
     config.i18n.default_locale = :ko
     
-    FACEBOOK_CONFIG = YAML.load_file("#{Rails.root}/config/facebook.yml")[Rails.env]
+    # FACEBOOK_CONFIG = YAML.load_file("#{Rails.root}/config/facebook.yml")[Rails.env]
     config.assets.precompile += ['application.js', 'application.css', 'admin.js', 'admin.css']
   end
 end

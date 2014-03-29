@@ -232,11 +232,11 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
-  if File.exists? ("#{Rails.root}/config/facebook.yml")
-    FACEBOOK_CONFIG = YAML.load_file("#{Rails.root}/config/facebook.yml")[Rails.env]
-  else
-    FACEBOOK_CONFIG = {app_id: "temp", app_secret: "temp"}
-  end
+  # if File.exists? ("#{Rails.root}/config/facebook.yml")
+  #   FACEBOOK_CONFIG = YAML.load_file("#{Rails.root}/config/facebook.yml")[Rails.env]
+  # else
+  FACEBOOK_CONFIG = {app_id: "temp", app_secret: "temp"}
+  # end
   require "omniauth-facebook"
   # OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE if Rails.env.development? 
   config.omniauth :facebook, FACEBOOK_CONFIG[:app_id], FACEBOOK_CONFIG[:app_secret],

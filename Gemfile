@@ -46,7 +46,6 @@ end
 group :test do
   gem 'capybara'
   gem 'guard-rspec'
-  # gem "database_cleaner", '~> 1.2.0'
   gem "email_spec"
 end
 

@@ -1,86 +1,91 @@
-require "bundler/capistrano"
-require "net/sftp"
+# config valid only for Capistrano 3.1
+lock '3.1.0'
 
-set :rails_env, "production" #added for delayed job
-set :application, "kfarm"
-set :user, "daul"
-set :deploy_to, "/home/#{user}/#{application}"
-set :deploy_via, :copy
-set :use_sudo, false
-set :scm, "git"
-set :repository, "git@bitbucket.org:#{application}/#{application}.git"
-set :branch, "master"
-set :default_environment, {
-      'PATH' => "/home/daul/.rbenv/versions/2.0.0-p0/bin/:$PATH"
-    }
-set :keep_releases, 5
-set :shared_children, shared_children + %w{public/uploads}
-default_run_options[:pty] = true
-ssh_options[:forward_agent] = true
-server "farmfarmmentor.org", :web, :app, :db, primary: true
-after "deploy", "deploy:cleanup" # keep only the last 5 releases
+set :application, 'kfarm'
+set :repo_url, 'git@github.com:onesup/kfarm.git'
+set :scm_user, "onesup"
 
-# for delayed_job
-#after "deploy:stop", "delayed_job:stop"
-#after "deploy:start", "delayed_job:start"
-#after "deploy:restart", "delayed_job:restart"
+
+# Default branch is :master
+# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
+
+# Default deploy_to directory is /var/www/my_app
+set :deploy_to, "/home/deployer/www/kfarm"
+set :user, "deployer"
+
+
+# Default value for :scm is :git
+# set :scm, :git
+
+# Default value for :format is :pretty
+# set :format, :pretty
+
+# Default value for :log_level is :debug
+# set :log_level, :debug
+
+# Default value for :pty is false
+# set :pty, true
+
+# Default value for :linked_files is []
+set :linked_files, %w{config/database.yml config/secrets.yml log/production.log log/development.log}
+
+# Default value for linked_dirs is []
+# set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+
+# Default value for default_env is {}
+# set :default_env, { path: "/opt/ruby/bin:$PATH" }
+set :default_env, {
+  path: "$HOME/.rbenv/shims:$HOME/.rbenv/bin:$PATH",
+}
+
+set :rbenv_type, :user
+set :rbenv_ruby, "2.1.1"
+
+# Default value for keep_releases is 5
+# set :keep_releases, 5
+
+
+# capistrano-rails options
+
+# If the environment differs from the stage name
+# set :rails_env, 'staging'
+
+# Defaults to 'db'
+#set :migration_role, 'migrator'
+
+# Defaults to [:web]
+set :assets_roles, [:web, :app]
+
+# Defaults to 'assets' this should match config.assets.prefix in your rails config/application.rb
+# set :assets_prefix, 'prepackaged-assets'
+
+# If you need to touch public/images, public/javascripts and public/stylesheets on each deploy:
+set :normalize_asset_timestamps, %{public/images public/javascripts public/stylesheets}
+
+
+# using ForwardAgent
+# set :ssh_options, { forward_agent: true }
+
 
 namespace :deploy do
-  %w[start stop restart].each do |command|
-    desc "#{command} unicorn server"
-    task command, roles: :app, except: {no_release: true} do
-      run "/etc/init.d/unicorn_#{application} #{command}"
+
+  desc 'Restart application'
+  task :restart do
+    on roles(:app), in: :sequence, wait: 5 do
+      # Your restart mechanism here, for example:
+      # execute :touch, release_path.join('tmp/restart.txt')
     end
   end
 
-  task :setup_config, roles: :app do
-    sudo "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{application}"
-    sudo "ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{application}"
-  end
-  after "deploy:setup", "deploy:setup_config"
-  
-  task :upload_parameters do
-    # origin_file = "config/email.yml"
-    # destination_file = "#{shared_path}/config/email.yml"
-    # run "mkdir -p #{File.dirname(destination_file)}"
-    # top.upload(origin_file, destination_file)
-    origin_file = "config/facebook.yml"
-    destination_file = "#{shared_path}/config/facebook.yml"
-    run "mkdir -p #{File.dirname(destination_file)}"
-    top.upload(origin_file, destination_file)
-    
-  end
-  before "deploy:setup", "deploy:upload_parameters"
+  after :publishing, :restart
 
-  desc "Make sure local git is in sync with remote."
-  task :check_revision, roles: :web do
-    unless `git rev-parse HEAD` == `git rev-parse origin/master`
-      puts "WARNING: HEAD is not the same as origin/master"
-      puts "Run `git push` to sync changes."
-      exit
+  after :restart, :clear_cache do
+    on roles(:web), in: :groups, limit: 3, wait: 10 do
+      # Here we can do anything such as:
+      # within release_path do
+      #   execute :rake, 'cache:clear'
+      # end
     end
   end
-  
-  desc "Make symlink for custom config yaml"
-  task :symlink_parameters do
-    run "ln -nfs #{shared_path}/config/facebook.yml #{latest_release}/config/facebook.yml"
-    run "ln -nfs #{shared_path}/config/email.yml #{latest_release}/config/email.yml"
-  end
-  after "deploy:finalize_update", "deploy:symlink_parameters"
-  
-  before "deploy", "deploy:check_revision"
+
 end
-
-namespace :db do
-  desc "reload the database with seed data"
-  task :reset do
-    run "cd #{current_path}; RAILS_ENV=#{rails_env}; rake db:migrate:reset RAILS_ENV=#{rails_env}"
-  end
-  
-  task :seed do
-    run "cd #{current_path}; RAILS_ENV=#{rails_env}; rake db:seed RAILS_ENV=#{rails_env}"
-  end
-  
-end
-
-
