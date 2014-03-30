@@ -14,7 +14,8 @@ module Kfarm
     config.assets.enabled = true
     config.time_zone = 'Asia/Seoul'
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'devise', '*.{rb,yml}').to_s]
-    config.i18n.default_locale = :ko
+    config.i18n.available_locales = [:ko, :en]
+    # config.i18n.default_locale = :'ko'
     config.assets.precompile += ['application.js', 'application.css', 'admin.js', 'admin.css']
   end
 end
