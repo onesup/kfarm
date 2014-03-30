@@ -31,7 +31,7 @@ class Job < ActiveRecord::Base
     http = Net::HTTP.new(uri.host, uri.port)
     req = Net::HTTP::Post.new(uri.request_uri)
     req.content_type = 'application/x-www-form-urlencoded;'
-    req['x-waple-authorization'] = FACEBOOK_CONFIG[:sms_key]
+    req['x-waple-authorization'] = Rails.application.secrets.sms_key
     time = (Time.now+5.seconds).strftime("%Y%m%d%H%M%S")
     req.set_form_data(
       "send_time" => time.to_s, 

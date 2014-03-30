@@ -21,3 +21,4 @@
 /log/*.log
 /tmp
 *.yml
+/public/assets/*

@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   def self.find_for_facebook_oauth(auth, signed_in_resource=nil)
     user = User.find_by_email(auth.info.email)
     unless user
-      user = User.new(  name:auth.extra.raw_info.name,
+      user = User.new( name:auth.extra.raw_info.name,
                        provider:auth.provider,
                        uid:auth.uid,
                        email:auth.info.email,
@@ -35,7 +35,8 @@ class User < ActiveRecord::Base
   def self.fb_username_to_fb_id(username)
     username = username.gsub("https://www.facebook.com","").gsub("https://facebook.com","")
     username = username.gsub("http://www.facebook.com","").gsub("http://facebook.com","")
-    oauth = Koala::Facebook::OAuth.new(FACEBOOK_CONFIG[:app_id], FACEBOOK_CONFIG[:app_secret])
+    oauth = Koala::Facebook::OAuth.new(
+      Rails.application.secrets.fb_app_id, Rails.application.secrets.fb_app_secret)
     graph = Koala::Facebook::API.new(oauth.get_app_access_token)
     begin
       graph.get_object(username)["id"]
@@ -45,7 +46,8 @@ class User < ActiveRecord::Base
   end
   
   def get_fb_profile_image
-    oauth = Koala::Facebook::OAuth.new(FACEBOOK_CONFIG[:app_id], FACEBOOK_CONFIG[:app_secret])
+    oauth = Koala::Facebook::OAuth.new(
+      Rails.application.secrets.fb_app_id, Rails.application.secrets.fb_app_secret)
     graph = Koala::Facebook::API.new(self.token)
     begin
       graph.get_picture(self.uid,{type: "large"})
