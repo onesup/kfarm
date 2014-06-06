@@ -19,10 +19,10 @@
 
   Paloma.callbacks['reviews']['new'] = function(params){
     // Do something here.
-	$(document).ready(
-		function()
-		{
-		}
-	);
+		$(document).ready(function() {
+		  $('.editor').summernote();
+		});
+		
+	
   };
 })();

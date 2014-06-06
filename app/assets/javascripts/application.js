@@ -1,5 +1,3 @@
-
-//= require paloma
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
@@ -11,7 +9,8 @@
 //= require jquery-ui-1.10.3.custom.min
 //= require jquery.quicksand
 //= require spin
-
+//= require summernote
+//= require paloma
 (function() {
 	$("#leftmenu-introduce img").mouseenter(function() {
 		$(this).attr("src", '<%= asset_path("leftmenu_introduce_over.png") %>');

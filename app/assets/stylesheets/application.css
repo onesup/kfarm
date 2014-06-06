@@ -16,10 +16,11 @@
 *= require redactor
 *= require notices
 *= require jquery.bxslider
-*= require home
+*= require summernote
 *= require faq
-
+*= require home
 * 아래 stub는 assets/stylesheets/the_role 안의 stylesheet는 제외하는 코드
 *= stub ./the_role.css
 *= stub ./the_role/bootstrap_sass.css.scss
+
 */

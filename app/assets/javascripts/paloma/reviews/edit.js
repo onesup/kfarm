@@ -18,6 +18,8 @@
 
 
   Paloma.callbacks['reviews']['edit'] = function(params){
-    // Do something here.
+		$(document).ready(function() {
+		  $('.editor').summernote();
+		});
   };
 })();

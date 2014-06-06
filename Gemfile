@@ -24,7 +24,7 @@ gem 'simple_form', github: 'plataformatec/simple_form', tag: 'v3.0.0.beta1'
 # You'll need to include the following dependencies of Summernote
 gem 'font-awesome-rails'
 # This is the right gem to use summernote editor in Rails projects.
-gem 'summernote-rails'
+# gem 'summernote-rails'
 gem 'guard-rails'
 
 group :doc do
