@@ -42,7 +42,7 @@ rails에서의 view 작업 시 유의사항
 `<a href="/">첫화면으로</a>`
 
 `<%= link_to "첫화면으로", "root_path" >`
-이 때 `root_path`와 같은 각 페이지의 별칭은 터미널에서 `rake routes`로 확인 할 수 있습니다.
+이 때 `root_path`와 같은 각 페이지의 별칭은 터미널에서 `rake routes`로 확인 할 수 있습니다. ^^
 ## 이미지 삽입
 ### html
 `<img src="images/logo.png">`
